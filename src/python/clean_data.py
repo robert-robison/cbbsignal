@@ -74,13 +74,10 @@ team_df.to_csv(here("data/ncaa_teams_all.csv"), index=False)
 
 final_df.to_csv(here('data/ncaa_games_all.csv'), index=False)
 
-# %%
-# teams = ['virginia']
-# years = [2018]
-# mask = ((final_df['team_i'].isin(teams)) | (final_df['team_j'].isin(teams))) & final_df['year'].isin(years)
-# final_df[mask].sort_values('date_game').to_csv(here("data/temp_invest.csv"), index=False)
 
 # %%
+
+# Creating an acc-only dataset
 
 acc_teams = ['virginia', 'wake-forest', 'duke', 'north-carolina', 'north-carolina-state', 
             'virginia-tech', 'boston-college', 'syracuse', 'florida-state', 'georgia-tech',
@@ -91,15 +88,15 @@ acc_conf_mask = (final_df['team_i'].isin(acc_ids)) & (final_df['team_j'].isin(ac
 
 acc_2018 = final_df[acc_conf_mask & (final_df['year'] == 2018)]
 
-id_map = {acc_id: i for i, acc_id in enumerate(acc_ids)}
+id_map = {acc_id: i + 1 for i, acc_id in enumerate(acc_ids)}
 acc_2018['team_i'] = acc_2018['team_i'].replace(id_map)
 acc_2018['team_j'] = acc_2018['team_j'].replace(id_map)
 
 acc_team_df = team_df[team_df['team_name'].isin(acc_teams)]
-acc_team_df = acc_team_df['team_id'].replace(id_map)
+acc_team_df['team_id'] = acc_team_df['team_id'].replace(id_map)
 
 acc_2018.to_csv(here("data/acc_games_2018.csv"), index=False)
-acc_2018.to_csv(here("data/acc_teams_2018.csv"), index=False)
+acc_team_df.to_csv(here("data/acc_teams_2018.csv"), index=False)
 
 # %%
 
